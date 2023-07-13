@@ -1,0 +1,14 @@
+<!--pages/myInfo/index.wxml-->
+<view class="container">
+  <van-row>
+    <van-col span="24">
+      <view class="myInfo_layout">
+        <view class="myInfo_layout_content">
+          <image src="../../images/20230307141538.jpg" mode="widthFix" show-menu-by-longpress="{{true}}" style="width:250px"></image>
+          <view class="myInfo_layout_content_text">长按3秒识别二维码</view>
+        </view>
+      </view>
+    </van-col>
+  </van-row>
+
+</view>

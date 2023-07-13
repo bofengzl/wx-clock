@@ -1,0 +1,30 @@
+/* pages/myInfo/index.wxss */
+.container_layout {
+  position: relative;
+  /* margin-bottom: 40px; */
+  display: flex;
+  flex-direction: column;
+  font-family: 'SimHei';
+  height: 100ch;
+  background-color: #f8f8f8f8;
+}
+.myInfo_layout{
+  display: flex;
+  flex-direction: column;
+  /* height: 60ch; */
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.myInfo_layout_content{
+  padding: 10px;
+  background-color: #e0e264;
+  border-radius: 4px;
+}
+.myInfo_layout_content_text{
+  font-size: 12px;
+  text-align: center;
+  color: #ffff;
+  padding-top:5px ;
+}

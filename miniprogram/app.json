@@ -1,0 +1,26 @@
+{
+  "pages": [
+    "pages/clock/index",
+    "pages/myInfo/index"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh":true,
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "打卡程序",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-notify": "@vant/weapp/notify/index",
+    "van-picker": "@vant/weapp/picker/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "van-row": "@vant/weapp/row/index",
+    "van-col": "@vant/weapp/col/index",
+    "van-notice-bar": "@vant/weapp/notice-bar/index"
+  }
+}
