@@ -21,6 +21,7 @@
     "van-action-sheet": "@vant/weapp/action-sheet/index",
     "van-row": "@vant/weapp/row/index",
     "van-col": "@vant/weapp/col/index",
-    "van-notice-bar": "@vant/weapp/notice-bar/index"
+    "van-notice-bar": "@vant/weapp/notice-bar/index",
+    "van-image": "@vant/weapp/image/index"
   }
 }

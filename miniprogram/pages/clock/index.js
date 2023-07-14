@@ -16,7 +16,10 @@ Page({
     format: 'YYYY-MM-DD HH:mm:ss',
     userInfo: {},
     show: false,
-    columns: ['test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9', 'test10']
+    columns: ['未知', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9', 'test10'],
+    codeShow:false,
+    codeValue:'',
+    imgSrcValue:''
   },
   onChange(event) {
     const {
@@ -118,6 +121,19 @@ Page({
       msg
     })
   },
+
+  // 登录操作
+  handleLogin() {
+    const msg = JSON.stringify({
+      msg: 'login',
+      to: wx.getStorageSync('signature')
+    })
+    //发送数据
+    WebSocket.sendSocketMessage({
+      msg
+    })
+  },
+
   // Socket收到的信息
   onSocketMessageCallback: function (res) {
     if (this.logInfo === undefined) {
@@ -133,12 +149,21 @@ Page({
     this.setData({
       logInfo: this.logInfo
     })
-    // 判断是否http开头，是则显示图片
-    const httpFlag = new RegExp("http");
-    if (httpFlag.test(res)) {
-      console.log('img', res)
+    // // 判断是否http开头，是则显示图片
+    // const httpFlag = new RegExp("http");
+    // if (httpFlag.test(res)) {
+    //   console.log('img', res)
+    //   this.setData({
+    //     imgCodeSrc: res
+    //   })
+    // }
+    const _res = JSON?.parse(res);
+    console.log(_res);
+    console.log(_res?.msg?.status);
+    if(_res?.msg?.status === 200){
       this.setData({
-        imgCodeSrc: res
+        codeShow: true,
+        imgSrcValue:`https://bfengzl.com/images/${_res.msg.url}`
       })
     }
   },
@@ -152,7 +177,17 @@ Page({
       logInfo: this.logInfo
     })
   },
-  getCodeImg() {
-    console.log('11111111111111111111')
+  // 回传验证码
+  onConfirmCode(){
+    console.log(this.data.codeValue)
+    const msg = JSON.stringify({
+      msg: 'code',
+      value:this.data.codeValue,
+      to: wx.getStorageSync('signature')
+    })
+    //发送数据
+    WebSocket.sendSocketMessage({
+      msg
+    })
   }
 })
