@@ -6,12 +6,13 @@
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "dark",
-    "enablePullDownRefresh":true,
+    "enablePullDownRefresh": true,
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "打卡程序",
     "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",
     "van-dialog": "@vant/weapp/dialog/index",
@@ -22,6 +23,12 @@
     "van-row": "@vant/weapp/row/index",
     "van-col": "@vant/weapp/col/index",
     "van-notice-bar": "@vant/weapp/notice-bar/index",
-    "van-image": "@vant/weapp/image/index"
+    "van-image": "@vant/weapp/image/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-popup": "@vant/weapp/popup/index"
   }
 }

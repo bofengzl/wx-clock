@@ -1,7 +1,56 @@
 <view class="container_layout">
   <van-notify id="van-notify" />
+  <van-notice-bar mode="closeable" text="建议先执行【刷新页面】操作，再进行【打卡】操作。" />
+  <van-tabs swipeable animated>
+    <van-tab title="控制面板">
+      <view class="operation-layout">
+        <van-cell-group>
+          <van-cell>
+            <view slot="title" style="display: flex; justify-content: space-between;">
+              <view class="van-cell-text">接收者</view>
+              <van-tag type="danger">{{receiverName}}</van-tag>
+            </view>
+          </van-cell>
+          <!-- 在线用户 -->
+          <van-cell title="在线者" use-label-slot>
+            <view slot="label">
+              <view class="online-user-layout">
+                <van-tag type="success" wx:for="{{onlineUserArr}}" wx:key="item">{{item}}</van-tag>
+              </view>
+            </view>
+          </van-cell>
+        </van-cell-group>
+        <!-- 操作 -->
+        <view class="opeation-layout">
+          <van-button type="primary" bind:click="handleReload" size="small" block>刷新打卡页面</van-button>
+          <van-button type="danger" bind:click="handleDelLog" size="small" block>清除日志</van-button>
+          <van-button type="info" bind:click="handleLogin" size="small" block>登录【脚本】</van-button>
+          <van-button type="info" bind:click="handleManual" size="small" block>登录【手动】</van-button>
+          <van-button type="danger" bind:click="handleSignOut" size="small" block>注销</van-button>
+          <van-button type="warning" bind:click="handleViewResult" size="small" block>查看打卡结果</van-button>
+        </view>
+        <van-image fit="contain" src="{{viewResultImgUrl}}" fit="contain" width="100%" height="200px" use-error-slot>
+          <text slot="loading">打卡结果展示</text>
+        </van-image>
+      </view>
+
+    </van-tab>
+    <van-tab title="日志">
+      <!-- 日志 -->
+      <view class="log">
+        <van-cell wx:for="{{logInfo}}" wx:key="item" use-label-slot>
+          <view slot="label">
+            <van-tag type="primary">{{item.time}}</van-tag>
+            <view>
+              {{item.info}}
+            </view>
+          </view>
+        </van-cell>
+      </view>
+    </van-tab>
+  </van-tabs>
   <view>
-    <!-- 接受者弹框 -->
+    <!-- 接收者弹框 -->
     <van-dialog use-slot title="接收者" show="{{ show }}" bind:close="onClose" bind:confirm="onConfirm">
       <van-picker columns="{{ columns }}" bind:change="onChange" />
     </van-dialog>
@@ -13,38 +62,18 @@
         <van-notice-bar scrollable="{{ false }}" text="若输入不正确，请重新【打卡】操作" />
       </van-cell-group>
     </van-dialog>
-    <!-- 操作 -->
-    <van-row>
-      <van-col span="24">
-        <van-notice-bar mode="closeable" text="建议先执行【刷新页面】操作，再进行【打卡】操作。" />
-      </van-col>
-      <van-col span="8">
-        <van-button type="info" bind:click="handleLogin" size="small" block>登录</van-button>
-      </van-col>
-      <van-col span="8">
-        <van-button type="primary" bind:click="handleReload" size="small" block>刷新打卡页面</van-button>
-      </van-col>
-      <van-col span="8">
-        <van-button type="danger" bind:click="handleDelLog" size="small" block>删除日志</van-button>
-      </van-col>
-    </van-row>
+    <!-- 登录输入账户密码弹框 -->
+    <van-dialog use-slot title="登录" show="{{ loginShow }}" show-cancel-button bind:confirm="onConfirmLogin">
+      <van-notice-bar mode="closeable" text="请执行【注销】后操作" />
+      <van-field model:value="{{ username }}" clearable label="账号" />
+      <van-field model:value="{{ password }}" clearable label="密码" border="{{ false }}" type="password" />
+    </van-dialog>
+    <!-- 展示查看结果 -->
+    <!-- <van-popup show="{{ viewResultShow }}" bind:close="{{viewResultShow = false}}">
+      <van-image width="10rem" height="10rem" fit="contain" src="{{viewResultImgUrl}}" />
+    </van-popup> -->
   </view>
-  <!-- 日志 -->
-  <view class="log">
-    <view class="title">
-      [Plugin info]
-      =====================================================================
-      title : 日志输出
-      =====================================================================
-      -----
-      [Input]
-      -----
-    </view>
-    <view wx:for="{{logInfo}}" wx:key="item">
-      <text user-select="true">{{item.info}}</text>
-    </view>
-  </view>
-
+  <!-- 打卡按钮 -->
   <view class="btn">
     <view class="btn_style_in" bindtap="handleClockIn" wx:if="{{nowTime}}">
       <text>{{nowTime}}</text>

@@ -17,9 +17,16 @@ Page({
     userInfo: {},
     show: false,
     columns: ['未知', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6', 'test7', 'test8', 'test9', 'test10'],
-    codeShow:false,
-    codeValue:'',
-    imgSrcValue:''
+    codeShow: false,
+    codeValue: '',
+    imgSrcValue: '',
+    loginShow: false,
+    receiverName: '', // 接收者
+    onlineUserArr: [], //在线者
+    username: '',
+    password: '',
+    viewResultShow: false,
+    viewResultImgUrl: ''
   },
   onChange(event) {
     const {
@@ -56,7 +63,9 @@ Page({
       });
     }
     this.signature = wx.getStorageSync('signature')
-    console.log(this.signature)
+    this.setData({
+      receiverName: wx.getStorageSync('signature')
+    });
   },
 
   /**
@@ -104,10 +113,7 @@ Page({
       msg: 'clockIn',
       to: wx.getStorageSync('signature')
     })
-    //发送数据
-    WebSocket.sendSocketMessage({
-      msg
-    })
+    this.send(msg);
   },
 
   //刷新页面
@@ -116,10 +122,7 @@ Page({
       msg: 'reload',
       to: wx.getStorageSync('signature')
     })
-    //发送数据
-    WebSocket.sendSocketMessage({
-      msg
-    })
+    this.send(msg);
   },
 
   // 登录操作
@@ -128,14 +131,18 @@ Page({
       msg: 'login',
       to: wx.getStorageSync('signature')
     })
-    //发送数据
-    WebSocket.sendSocketMessage({
-      msg
-    })
+    this.send(msg);
   },
 
   // Socket收到的信息
   onSocketMessageCallback: function (res) {
+    // 获取链接用户
+    if (res.includes('当前连接的全部用户')) {
+      const onlineUser = res.split('：')[1].split('|').filter((item) => item !== '')
+      this.setData({
+        onlineUserArr: onlineUser
+      })
+    }
     if (this.logInfo === undefined) {
       this.logInfo = []
     }
@@ -143,8 +150,10 @@ Page({
       type: 'primary',
       message: res
     });
+    // 日志
     this.logInfo.push({
-      info: `${this.getLogDateStr()} ${res}`
+      info: res,
+      time: moment().format('YYYY-MM-DD HH:mm:ss')
     })
     this.setData({
       logInfo: this.logInfo
@@ -157,13 +166,18 @@ Page({
     //     imgCodeSrc: res
     //   })
     // }
-    const _res = JSON?.parse(res);
-    console.log(_res);
-    console.log(_res?.msg?.status);
-    if(_res?.msg?.status === 200){
+    const _res = res.includes('{') ? JSON?.parse(res) : res;
+    if (_res?.msg?.status === 200 && _res?.msg?.type === 'view') {
+      this.setData({
+        viewResultShow: true,
+        viewResultImgUrl: `https://bfengzl.com/images/${_res.msg.url}`
+      })
+      return
+    }
+    if (_res?.msg?.status === 200) {
       this.setData({
         codeShow: true,
-        imgSrcValue:`https://bfengzl.com/images/${_res.msg.url}`
+        imgSrcValue: `https://bfengzl.com/images/${_res.msg.url}`
       })
     }
   },
@@ -178,14 +192,58 @@ Page({
     })
   },
   // 回传验证码
-  onConfirmCode(){
+  onConfirmCode() {
     console.log(this.data.codeValue)
     const msg = JSON.stringify({
       msg: 'code',
-      value:this.data.codeValue,
+      value: this.data.codeValue,
       to: wx.getStorageSync('signature')
     })
-    //发送数据
+    this.send(msg);
+  },
+  // 手动填写账户密码
+  handleManual() {
+    this.setData({
+      loginShow: true
+    })
+  },
+  // 手动账户密码回调
+  onConfirmLogin() {
+    console.log(this.data.username, '11111')
+    console.log(this.data.username, '11111')
+    const {
+      username,
+      password
+    } = this.data
+    const info = JSON.stringify({
+      username,
+      password
+    })
+    const msg = JSON.stringify({
+      msg: 'ManualLog',
+      value: info,
+      to: wx.getStorageSync('signature')
+    })
+    this.send(msg);
+  },
+  // 注销
+  handleSignOut() {
+    const msg = JSON.stringify({
+      value: 'signOut',
+      to: wx.getStorageSync('signature')
+    })
+    this.send(msg);
+  },
+  // 查看打卡结果
+  handleViewResult() {
+    const msg = JSON.stringify({
+      value: 'viewResult',
+      to: wx.getStorageSync('signature')
+    })
+    this.send(msg);
+  },
+  //发送数据
+  send(msg) {
     WebSocket.sendSocketMessage({
       msg
     })

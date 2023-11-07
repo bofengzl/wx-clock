@@ -1,6 +1,6 @@
 // 域名地址(项目实地址)
 const Host = 'wss://bfengzl.com/ws';
-// const Host = 'ws://127.0.0.1:8089/ws';
+// const Host = 'wss://124.222.160.56/ws';
 // 标识
 var auth = 'aaa';
 
