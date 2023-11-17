@@ -26,7 +26,8 @@ Page({
     username: '',
     password: '',
     viewResultShow: false,
-    viewResultImgUrl: ''
+    viewResultImgUrl: '',
+    controllerName: ''
   },
   onChange(event) {
     const {
@@ -104,6 +105,15 @@ Page({
     wx.stopPullDownRefresh();
   },
 
+  getUserName() {
+    console.log('1111111')
+    var msg = JSON.stringify({
+      msg: 'getName',
+      to: wx.getStorageSync('signature')
+    })
+    this.send(msg);
+  },
+
   /**
    * 签入操作
    */
@@ -136,12 +146,14 @@ Page({
 
   // Socket收到的信息
   onSocketMessageCallback: function (res) {
+    console.log(res)
     // 获取链接用户
     if (res.includes('当前连接的全部用户')) {
       const onlineUser = res.split('：')[1].split('|').filter((item) => item !== '')
       this.setData({
         onlineUserArr: onlineUser
       })
+      this.getUserName();
     }
     if (this.logInfo === undefined) {
       this.logInfo = []
@@ -174,12 +186,19 @@ Page({
       })
       return
     }
+    if (_res.accept === `userName_${wx.getStorageSync('signature')}`) {
+      this.setData({
+        controllerName: _res.msg
+      })
+      return
+    }
     if (_res?.msg?.status === 200) {
       this.setData({
         codeShow: true,
         imgSrcValue: `https://bfengzl.com/images/${_res.msg.url}`
       })
     }
+
   },
   getLogDateStr: function (e) {
     return `[${moment().format('YYYY-MM-DD HH:mm:ss')}]  >>>  🚀  `
@@ -209,8 +228,6 @@ Page({
   },
   // 手动账户密码回调
   onConfirmLogin() {
-    console.log(this.data.username, '11111')
-    console.log(this.data.username, '11111')
     const {
       username,
       password

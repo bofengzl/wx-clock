@@ -7,15 +7,21 @@
         <van-cell-group>
           <van-cell>
             <view slot="title" style="display: flex; justify-content: space-between;">
+              <view class="van-cell-text">控制者</view>
+              <van-tag type="primary" size="medium">{{controllerName}}</van-tag>
+            </view>
+          </van-cell>
+          <van-cell>
+            <view slot="title" style="display: flex; justify-content: space-between;">
               <view class="van-cell-text">接收者</view>
-              <van-tag type="danger">{{receiverName}}</van-tag>
+              <van-tag type="danger" size="medium">{{receiverName}}</van-tag>
             </view>
           </van-cell>
           <!-- 在线用户 -->
           <van-cell title="在线者" use-label-slot>
             <view slot="label">
               <view class="online-user-layout">
-                <van-tag type="success" wx:for="{{onlineUserArr}}" wx:key="item">{{item}}</van-tag>
+                <van-tag type="success" size="medium" wx:for="{{onlineUserArr}}" wx:key="item">{{item}}</van-tag>
               </view>
             </view>
           </van-cell>
