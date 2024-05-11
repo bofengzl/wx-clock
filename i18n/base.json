@@ -1,0 +1,11 @@
+{
+	"ios": {
+		"name": "CLOCK打卡"
+	},
+	"android": {
+		"name": "CLOCK打卡"
+	},
+	"common": {
+		"name": "CLOCK打卡"
+	}
+}
